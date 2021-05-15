@@ -39,16 +39,16 @@ module Rulers
       [
         200,
         { "Content-Type" => "text/html" },
-        [text]
+        [text],
       ]
     end
 
     private
 
     def controller_and_action(env)
-      _, controller, action, after = env["PATH_INFO"].split("/")
+      _, controller, action, _after = env["PATH_INFO"].split("/")
       controller_class = Object.const_get("#{controller&.capitalize}Controller")
-      [ controller_class, action]
+      [controller_class, action]
     end
   end
 end
