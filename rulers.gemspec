@@ -26,6 +26,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency("rack", "~>2")
+  spec.add_development_dependency("minitest", "~> 5.14")
+  spec.add_development_dependency("byebug")
 
   # For more information and examples about making a new gem, checkout our
   # guide at: https://bundler.io/guides/creating_gem.html

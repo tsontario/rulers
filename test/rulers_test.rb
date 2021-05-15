@@ -19,4 +19,19 @@ class RulersTest < Minitest::Test
     assert_equal(200, ::Rulers::App.new.call(env)[0])
     assert_equal([TedController.new(nil).think], ::Rulers::App.new.call(env)[2])
   end
+
+  def test_to_underscore
+    assert_equal("foo", Rulers.to_underscore("foo"))
+    assert_equal("foo", Rulers.to_underscore("FOO"))
+    assert_equal("foo_bar", Rulers.to_underscore("FooBar"))
+    assert_equal("foo_bar", Rulers.to_underscore("FOOBar"))
+    assert_equal("with2_numbers", Rulers.to_underscore("With2Numbers"))
+  end
+
+  def test_autorequire
+    assert_raises(LoadError) { TestController }
+    path = File.expand_path("fixtures/requires", __dir__)
+    $LOAD_PATH << path
+    assert(TestController)
+  end
 end
