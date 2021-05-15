@@ -7,7 +7,8 @@ class RulersTest < Minitest::Test
     refute_nil ::Rulers::VERSION
   end
 
-  def test_it_does_something_useful
-    assert false
+  def test_app_returns_success
+    env = { "PATH_INFO" => "/", "QUERY_STRING" => "" }
+    assert_equal(200, ::Rulers::App.new.call(env)[0])
   end
 end
