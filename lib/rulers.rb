@@ -14,8 +14,7 @@ module Rulers
 
   class App
     def call(env)
-      raise "foobar"
-      klass, act = controller_and_action(env)
+      klass, action = controller_and_action(env)
       # Forward action to target class. TODO: proper router so callers can't trigger arbitrary controller methods
       text = klass.new(env).send(action)
       [
