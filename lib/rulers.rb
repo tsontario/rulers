@@ -47,6 +47,24 @@ module Rulers
     end
   end
 
+  class FileModel
+    def self.find(id)
+      new("data/#{id}.json")
+    rescue
+      nil
+    end
+
+    def initialize(file)
+      @file = file
+      contents = File.read(file)
+      @hash = JSON.load(contents)
+    end
+
+    def [](field)
+      @hash[field.to_s]
+    end
+  end
+
   class App
     def call(env)
       klass, action = controller_and_action(env)
