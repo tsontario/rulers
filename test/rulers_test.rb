@@ -8,9 +8,28 @@ class TedController < Rulers::Controller
   end
 end
 
+class TestApp < Rulers::App
+  def call(env)
+    [
+      200,
+      { "Content-Type" => "text/html" },
+      ["OK"],
+    ]
+  end
+end
+
 class RulersTest < Minitest::Test
+  include Rack::Test::Methods
+
   def test_that_it_has_a_version_number
     refute_nil(::Rulers::VERSION)
+  end
+
+  def test_request
+    get "/"
+    assert(last_response.ok?)
+    body = last_response.body
+    assert_equal(body, "OK")
   end
 
   def test_new_controller_action
@@ -32,5 +51,11 @@ class RulersTest < Minitest::Test
     path = File.expand_path("fixtures/requires", __dir__)
     $LOAD_PATH << path
     assert(TestController)
+  end
+
+  private
+
+  def app
+    TestApp.new
   end
 end
