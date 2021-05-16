@@ -57,7 +57,7 @@ module Rulers
     def initialize(file)
       @file = file
       contents = File.read(file)
-      @hash = JSON.load(contents)
+      @hash = JSON.parse(contents)
     end
 
     def [](field)

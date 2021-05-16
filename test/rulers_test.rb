@@ -9,7 +9,7 @@ class TedController < Rulers::Controller
 end
 
 class TestApp < Rulers::App
-  def call(env)
+  def call(_env)
     [
       200,
       { "Content-Type" => "text/html" },
@@ -26,7 +26,7 @@ class RulersTest < Minitest::Test
   end
 
   def test_request
-    get "/"
+    get("/")
     assert(last_response.ok?)
     body = last_response.body
     assert_equal(body, "OK")
