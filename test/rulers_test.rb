@@ -32,6 +32,11 @@ class RulersTest < Minitest::Test
     assert_equal(body, "OK")
   end
 
+  def test_favicon_request_returns_404
+    env = { "PATH_INFO" => "/favicon.ico" }
+    assert_equal(404, ::Rulers::App.new.call(env)[0])
+  end
+
   def test_new_controller_action
     env = { "PATH_INFO" => "/ted/think", "QUERY_STRING" => "" }
     assert_equal(200, ::Rulers::App.new.call(env)[0])

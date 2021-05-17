@@ -17,7 +17,6 @@ module Rulers
       request.params
     end
 
-    # default binding is that of the caller
     def render(name, b = binding())
       template = "app/views/#{name}.html.erb"
       e = ERB.new(File.read(template))
