@@ -3,7 +3,8 @@ module Rulers
   module Utils
     extend(self)
     def to_underscore(s)
-      s.gsub(
+      s.gsub(/::/, "/")
+      .gsub(
         /([A-Z]+)([A-Z][a-z])/,
         '\1_\2'
       ).gsub(
