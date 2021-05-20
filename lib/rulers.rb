@@ -7,9 +7,14 @@ require_relative "rulers/controller"
 require_relative "rulers/file_model"
 
 class Object
-  def self.const_missing(c)
-    require Rulers.to_underscore(c.to_s)
-    const_get(c)
+  class << self
+    alias_method(:original_const_missing, :const_missing)
+    def const_missing(c)
+      require Rulers.to_underscore(c.to_s)
+      const_get(c)
+    rescue NameError, LoadError
+      original_const_missing
+    end
   end
 end
 
