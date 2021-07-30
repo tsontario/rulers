@@ -52,7 +52,7 @@ class RulersTest < Minitest::Test
   end
 
   def test_autorequire
-    assert_raises(LoadError) { TestController }
+    assert_raises(NameError) { TestController }
     path = File.expand_path("fixtures/requires", __dir__)
     $LOAD_PATH << path
     assert(TestController)

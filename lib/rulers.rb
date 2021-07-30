@@ -13,7 +13,7 @@ class Object
       require Rulers.to_underscore(c.to_s)
       const_get(c)
     rescue NameError, LoadError
-      original_const_missing
+      original_const_missing(c)
     end
   end
 end
