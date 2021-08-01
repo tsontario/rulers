@@ -17,10 +17,16 @@ module Rulers
       request.params
     end
 
-    def render(name, b = binding())
-      template = "app/views/#{name}.html.erb"
+    def render(view, b = binding())
+      template = File.expand_path("app/views/#{controller_name}/#{view}.html.erb", Rulers.config.root)
       e = ERB.new(File.read(template))
       e.result(b)
+    end
+
+    private
+
+    def controller_name
+      Utils.to_underscore(self.class.name).delete_suffix("_controller")
     end
   end
 end

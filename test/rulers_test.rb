@@ -2,22 +2,6 @@
 
 require "test_helper"
 
-class TedController < Rulers::Controller
-  def think
-    "Whoah, man..."
-  end
-end
-
-class TestApp < Rulers::App
-  def call(_env)
-    [
-      200,
-      { "Content-Type" => "text/html" },
-      ["OK"],
-    ]
-  end
-end
-
 class RulersTest < Minitest::Test
   include Rack::Test::Methods
 
@@ -26,21 +10,22 @@ class RulersTest < Minitest::Test
   end
 
   def test_request
-    get("/")
+    get("/root/index")
     assert(last_response.ok?)
     body = last_response.body
     assert_equal(body, "OK")
   end
 
   def test_favicon_request_returns_404
-    env = { "PATH_INFO" => "/favicon.ico" }
-    assert_equal(404, ::Rulers::App.new.call(env)[0])
+    get("/favicon.ico")
+    assert(last_response.not_found?)
   end
 
   def test_new_controller_action
-    env = { "PATH_INFO" => "/ted/think", "QUERY_STRING" => "" }
-    assert_equal(200, ::Rulers::App.new.call(env)[0])
-    assert_equal([TedController.new(nil).think], ::Rulers::App.new.call(env)[2])
+    get("/quotes/a_quote")
+    assert(last_response.ok?)
+    body = last_response.body
+    assert_equal(body, QuotesController.new(nil).a_quote)
   end
 
   def test_to_underscore
@@ -52,15 +37,28 @@ class RulersTest < Minitest::Test
   end
 
   def test_autorequire
-    assert_raises(NameError) { TestController }
+    assert_raises(NameError) { FixtureTestController }
     path = File.expand_path("fixtures/requires", __dir__)
-    $LOAD_PATH << path
-    assert(TestController)
+    $LOAD_PATH.unshift(path)
+    assert(FixtureTestController)
+  ensure
+    $LOAD_PATH.shift
+  end
+
+  def test_render
+    get("/quotes/shakes")
+    assert(last_response.ok?)
+    body = last_response.body
+    assert_equal(body, "There is nothing either good or bad but winking makes it so.\n")
   end
 
   private
 
   def app
-    TestApp.new
+    app = DummyApp::App.new
+    Rulers.config do |c|
+      c.root = File.expand_path("./dummy_app", __dir__)
+    end
+    app
   end
 end
