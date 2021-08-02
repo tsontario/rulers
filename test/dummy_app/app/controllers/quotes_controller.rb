@@ -6,8 +6,7 @@ class QuotesController < Rulers::Controller
   end
 
   def shakes
-    @noun = :winking
-    render(:shakes)
+    render(:shakes, noun: :winking)
   end
 
   def card_trick

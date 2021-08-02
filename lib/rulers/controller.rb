@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-require "erb"
 
 module Rulers
   class Controller
@@ -17,10 +16,10 @@ module Rulers
       request.params
     end
 
-    def render(view, b = binding())
+    def render(view, locals = {})
       template = File.expand_path("app/views/#{controller_name}/#{view}.html.erb", Rulers.config.root)
-      e = ERB.new(File.read(template))
-      e.result(b)
+      e = Erubis::Eruby.new(File.read(template))
+      e.result(locals.merge(env: env))
     end
 
     private
