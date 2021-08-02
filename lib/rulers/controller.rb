@@ -17,9 +17,13 @@ module Rulers
     end
 
     def render(view, locals = {})
+      ivar_mapping = instance_variables.each_with_object({}) do |ivar, acc|
+        acc[ivar] = instance_variable_get(ivar.to_sym)
+      end
+      locals.merge!(ivar_mapping)
       template = File.expand_path("app/views/#{controller_name}/#{view}.html.erb", Rulers.config.root)
       e = Erubis::Eruby.new(File.read(template))
-      e.result(locals.merge(env: env))
+      e.result(locals)
     end
 
     private

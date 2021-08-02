@@ -52,6 +52,13 @@ class RulersTest < Minitest::Test
     assert_equal(body, "There is nothing either good or bad but winking makes it so.\n")
   end
 
+  def test_render_passes_instance_variables
+    get("/quotes/shakes_with_instance_var")
+    assert(last_response.ok?)
+    body = last_response.body
+    assert_equal(body, "There is nothing either good or bad but sneaking makes it so.\n")
+  end
+
   private
 
   def app

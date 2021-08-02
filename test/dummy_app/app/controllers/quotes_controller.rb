@@ -9,6 +9,11 @@ class QuotesController < Rulers::Controller
     render(:shakes, noun: :winking)
   end
 
+  def shakes_with_instance_var
+    @noun = "sneaking"
+    render(:shakes_with_instance_var)
+  end
+
   def card_trick
     n = params["card"] || "Queen"
     "Your card: the #{n} of spades!"
